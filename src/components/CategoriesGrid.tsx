@@ -7,10 +7,10 @@ interface CategoriesGridProps {
 }
 
 export default function CategoriesGrid({ selectedCategory, onCategorySelect }: CategoriesGridProps) {
-  const { categories } = useAdmin()
+  const { categories, tools } = useAdmin()
 
   return (
-    <section className="px-8 pb-10">
+    <section id="categories-section" className="px-8 pb-10">
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-lg font-semibold text-gray-900">Categories</h2>
         {selectedCategory && (
@@ -27,6 +27,7 @@ export default function CategoriesGrid({ selectedCategory, onCategorySelect }: C
           <CategoryCard
             key={category.id}
             category={category}
+            toolCount={tools.filter((t) => t.category === category.id).length}
             isSelected={selectedCategory === category.id}
             onSelect={onCategorySelect}
           />

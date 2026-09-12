@@ -17,12 +17,13 @@ interface SidebarItemData {
   id: string
   label: string
   icon: LucideIcon
+  sectionId?: string
 }
 
 const navItems: SidebarItemData[] = [
   { id: 'home', label: 'Home', icon: Home },
-  { id: 'categories', label: 'Categories', icon: LayoutGrid },
-  { id: 'featured', label: 'Featured', icon: Star },
+  { id: 'categories', label: 'Categories', icon: LayoutGrid, sectionId: 'categories-section' },
+  { id: 'featured', label: 'Featured', icon: Star, sectionId: 'featured-section' },
   { id: 'trending', label: 'Trending', icon: TrendingUp },
   { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
 ]
@@ -32,10 +33,28 @@ const bottomItems: SidebarItemData[] = [
   { id: 'help', label: 'Help', icon: HelpCircle },
 ]
 
-export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false)
+interface SidebarProps {
+  collapsed: boolean
+  onCollapsedChange: (collapsed: boolean) => void
+}
+
+export default function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
   const [activeId, setActiveId] = useState('home')
   const navigate = useNavigate()
+
+  const handleNavClick = (item: SidebarItemData) => {
+    setActiveId(item.id)
+    if (item.sectionId) {
+      const el = document.getElementById(item.sectionId)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+    }
+    if (item.id === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   return (
     <aside
@@ -56,7 +75,7 @@ export default function Sidebar() {
           </div>
         )}
         <button
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => onCollapsedChange(!collapsed)}
           className={`p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors ${collapsed ? '' : 'ml-auto'}`}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
@@ -75,7 +94,7 @@ export default function Sidebar() {
           return (
             <button
               key={item.id}
-              onClick={() => setActiveId(item.id)}
+              onClick={() => handleNavClick(item)}
               className={`w-full flex items-center gap-3 rounded-lg text-[13px] font-medium transition-all duration-150 ${
                 collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2'
               } ${

@@ -8,7 +8,7 @@ export default function FeaturedTools() {
   if (featured.length === 0) return null
 
   return (
-    <section className="px-8 pb-12">
+    <section id="featured-section" className="px-8 pb-12">
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-lg font-semibold text-gray-900">Featured Tools</h2>
       </div>

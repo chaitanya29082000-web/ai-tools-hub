@@ -2,11 +2,12 @@ import type { Category } from '../types'
 
 interface CategoryCardProps {
   category: Category
+  toolCount: number
   isSelected?: boolean
   onSelect?: (id: string) => void
 }
 
-export default function CategoryCard({ category, isSelected, onSelect }: CategoryCardProps) {
+export default function CategoryCard({ category, toolCount, isSelected, onSelect }: CategoryCardProps) {
   const Icon = category.icon
 
   return (
@@ -37,7 +38,7 @@ export default function CategoryCard({ category, isSelected, onSelect }: Categor
           ? 'bg-indigo-100 text-indigo-700'
           : 'bg-gray-100 text-gray-500'
       }`}>
-        {category.toolCount} tools
+        {toolCount} tool{toolCount !== 1 ? 's' : ''}
       </span>
     </button>
   )
